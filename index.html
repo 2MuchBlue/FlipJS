@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+    </style>
+
+    <div style="width: 100%; display: flex; justify-content: center;" id="gameStuffHolder">
+        <canvas width="256" height="192" id="mainCanvas" style="image-rendering: pixelated; image-rendering: crisp-edges; width: 100vh; background-color: /*aquamarine*/ #c1accb;"></canvas>
+    </div>
+
+    
+    <div style="display: flex;">
+        <button style="width: 100px; height: 100px; background-color: rgb(0, 0, 0, 0);"      onclick=" activeColor = 0 " name="tools">eraser!</button>
+        <details id="pencilColorChoose" name="tools">
+            <summary style="width: 100px; height: 100px; background-color: crimson; border: solid 5px black;"><h3>Pencil</h3></summary>
+            <div style="position: absolute; top : 0px">
+                <button style="width: 100px; height: 100px; background-color: rgb(0, 0, 0, 1)"       onclick=" activeColor = 1; closeDetail('pencilColorChoose'); console.log('should close') "></button>
+                <button style="width: 100px; height: 100px; background-color: rgb(234, 55, 41, 1);"  onclick=" activeColor = 2; closeDetail('pencilColorChoose'); console.log('should close') "></button>
+                <button style="width: 100px; height: 100px; background-color: rgb(18, 52, 183, 1);;" onclick=" activeColor = 3; closeDetail('pencilColorChoose'); console.log('should close') "></button>
+                <button style="width: 100px; height: 100px; background-color: rgb(57, 130, 59, 1);"  onclick=" activeColor = 4; closeDetail('pencilColorChoose'); console.log('should close') "></button>
+                <button style="width: 100px; height: 100px; background-color: rgb(251, 232, 78, 1);" onclick=" activeColor = 5; closeDetail('pencilColorChoose'); console.log('should close') "></button>
+                <button style="width: 100px; height: 100px; background-color: white;"                onclick=" activeColor = 6; closeDetail('pencilColorChoose'); console.log('should close') "></button>
+            </div>
+        </details>
+
+        <details id="ditherChoice" name="tools">
+            <summary style="width: 100px; height: 100px; background-color: crimson; border: solid 5px black;"><h3>Dither</h3></summary>
+            <div style="position: absolute; top : 0px">
+                <button style="width: 100px; height: 100px; background-color: rgb(103, 115, 100)"    onclick=" activeDither = 0; closeDetail('ditherChoice'); console.log('should close') ">@@<br>@@</button>
+                <button style="width: 100px; height: 100px; background-color: rgb(113, 106, 106)"    onclick=" activeDither = 1; closeDetail('ditherChoice'); console.log('should close') ">@__<br>___<br>___</button>
+                <button style="width: 100px; height: 100px; background-color: rgb(234, 55, 41, 1);"  onclick=" activeDither = 2; closeDetail('ditherChoice'); console.log('should close') ">@_<br>__</button>
+                <button style="width: 100px; height: 100px; background-color: rgb(18, 52, 183, 1);;" onclick=" activeDither = 3; closeDetail('ditherChoice'); console.log('should close') ">@_<br>@_</button>
+                <button style="width: 100px; height: 100px; background-color: rgb(57, 130, 59, 1);"  onclick=" activeDither = 4; closeDetail('ditherChoice'); console.log('should close') ">@@<br>__</button>
+                <button style="width: 100px; height: 100px; background-color: rgb(251, 232, 78, 1);" onclick=" activeDither = 5; closeDetail('ditherChoice'); console.log('should close') ">@_<br>_@</button>
+                <button style="width: 100px; height: 100px; background-color: white;"                onclick=" activeDither = 6; closeDetail('ditherChoice'); console.log('should close') ">@@<br>@_</button>
+                <button style="width: 100px; height: 100px; background-color: white;"                onclick=" activeDither = 7; closeDetail('ditherChoice'); console.log('should close') ">@@@<br>@@@<br>@@_</button>
+            </div>
+        </details>
+        
+    </div>
+
+    <input type="range" min="0" max="7" id="ditherSlider">
+    <input type="range" min="0" max="5" id="sizeSlider">
+
+    <script src="https://2muchblue.github.io/JS-Usefuls/Math2.js"></script>
+    <script src="classes.js"></script>
+    <script src="data.js"></script>
+    <script src="setup.js"></script>
+    <script src="functions.js"></script>
+
+</body>
+</html>
