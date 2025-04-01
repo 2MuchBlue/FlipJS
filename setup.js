@@ -4,6 +4,9 @@ const ctx = canvasElement.getContext('2d');
 const canvasHalfWidth = canvasElement.width * 0.5;
 const canvasHalfHeight = canvasElement.height * 0.5;
 
+const displayCanvasElement = document.getElementById('displayCanvas');
+const displayCtx = displayCanvasElement.getContext('2d');
+
 const ditherSlider = document.getElementById("ditherSlider");
 const sizeSlider = document.getElementById("sizeSlider");
 
@@ -26,10 +29,8 @@ const rad2deg = 180 / Math.PI;
 
     canvasElement.addEventListener('mousedown', function(e){
 
-        pastLayers.unshift(Object.assign({}, activeLayers.front));
-
+        pastLayers.push(frames[currentFrame]);
         mouse[e.button] = true;
-
     });
     
     document.addEventListener('mouseup', function(e){
@@ -89,12 +90,43 @@ const rad2deg = 180 / Math.PI;
         console.log("key pressed")
 
         if(e.code === "KeyZ"){
-            console.log("trying to undo");
-            push2canvas(pastLayers.shift().pixels);
+            //console.log("trying to undo");
+            //push2canvas(pastLayers.shift().pixels);
             /*let replacementPixelArray = pastLayers.shift().pixels;
             for ( let i = 0; i < replacementPixelArray.length; i++ ){
-                activeLayers.front.pixels[i] = replacementPixelArray[i];
+                activeFrame.pixels[i] = replacementPixelArray[i];
             }*/
+
+            let localLastLayerPixels = pastLayers.pop().pixels;
+            if(localLastLayerPixels !== null){
+                frames[currentFrame].pixels = localLastLayerPixels;
+            }
+        }
+
+        if(e.code === "ArrowLeft"){
+            //console.log("trying last frame");
+            pastLayers = []; // clears history
+            currentFrame -= 1;
+            currentFrame = ExtraMath.clamp(currentFrame, 0, frames.length - 1);
+        }
+        if(e.code === "ArrowRight"){
+            //console.log("trying next frame");
+            pastLayers = []; // clears history
+            currentFrame += 1;
+            if(key("KeyB") === 1){
+                frames.splice(currentFrame, 0, new Frame());
+            }
+            currentFrame = ExtraMath.clamp(currentFrame, 0, frames.length - 1);
+        }
+        if(e.code === "ArrowUp"){
+            if(gameState === GameStates.Main){
+                gameState = GameStates.ToolMenu;
+            }
+        }
+        if(e.code === "ArrowDown"){
+            if(gameState === GameStates.ToolMenu || gameState === GameStates.ColorChoosing || gameState === GameStates.DitherChoosing){
+                gameState = GameStates.Main;
+            }
         }
     });
 
@@ -157,7 +189,7 @@ const rad2deg = 180 / Math.PI;
         lastTime = now;
 
         if(Time.deltaTime < 100){
-            gameUpdate();
+            masterUpdate();
             Time.frameCount++;
         }else{
             console.log("You've Left!");
@@ -178,3 +210,13 @@ function clickToStartTrigger(){
 	document.removeEventListener("click", clickToStartTrigger);
 	start();
 }
+
+// called after everything is loaded, but before first click...
+function init(){
+    let ingKeys = Object.keys(images);
+    for(let i = 0; i < ingKeys.length; i++ ){
+        images[ingKeys[i]].img.src = images[ingKeys[i]].path;
+    }
+}
+
+init();

@@ -7,8 +7,29 @@ const layerName = {
     back : "back"
 }
 
-let frames = [
+const images = {
+    "mainMenu" : {
+        "path" : "Images/UpperDisplay-01.png",
+        "w" : 256, "h" : 192, "x" : 0, "y" : 0,
+        "img" : new Image()
+    },
 
+    "pencilTool" : {
+        "path" : "Images/Pencil.png",
+        "w" : 62, "h" : 62, "x" : 0, "y" : 0,
+        "img" : new Image()
+    },
+
+    "eraserTool" : {
+        "path" : "Images/Eraser.png",
+        "w" : 62, "h" : 62, "x" : 0, "y" : 0,
+        "img" : new Image()
+    }
+}
+
+let currentFrame = 0;
+let frames = [
+    new Frame()
 ];
 
 let pastLayers = [ // acts as a history for undoing
@@ -20,17 +41,11 @@ let activeDither = 0;
 
 const Tools = {
     pencil : {
+        lastNonEraserColor : activeColor,
         use(){
+            if(activeColor !== 0){ this.lastNonEraserColor = activeColor; }
             ditherPat = (activeDither > 0 ? ditherPatterns[activeDither - 1] : null);
-            line(mouse.lastMouse.x, mouse.lastMouse.y, mouse.x, mouse.y, activeColor, sizeSlider.value, activeLayers.front, ditherPat);
-        }
-    },
-
-    fill : {
-        use(){
-            ditherPat = (ditherSlider.value > 0 ? ditherPatterns[ditherSlider.value - 1] : null);
-            let startingColor = activeLayers.front.getPixel(mouse.x, mouse.y)
-
+            line(mouse.lastMouse.x, mouse.lastMouse.y, mouse.x, mouse.y, activeColor, sizeSlider.value, activeFrame, ditherPat);
         }
     }
 }
